@@ -1,10 +1,10 @@
-package com.shashankp.chatbot;
+package com.shashankp.financemanager;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class AiPoweredChatbotApplicationTests {
+class AiPoweredExpenseTrackerAppTests {
 
 	@Test
 	void contextLoads() {

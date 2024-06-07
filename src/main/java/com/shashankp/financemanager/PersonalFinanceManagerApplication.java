@@ -1,13 +1,13 @@
-package com.shashankp.chatbot;
+package com.shashankp.financemanager;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class AiPoweredChatbotApplication {
+public class PersonalFinanceManagerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(AiPoweredChatbotApplication.class, args);
+		SpringApplication.run(PersonalFinanceManagerApplication.class, args);
 		System.out.println("Hello Spring!");
 	}
 
