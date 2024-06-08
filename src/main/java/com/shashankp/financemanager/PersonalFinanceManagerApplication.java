@@ -8,7 +8,6 @@ public class PersonalFinanceManagerApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(PersonalFinanceManagerApplication.class, args);
-		System.out.println("Hello Spring!");
 	}
 
 }
