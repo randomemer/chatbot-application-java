@@ -1,0 +1,71 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+# Top-most EditorConfig file
+root = true
+
+# Unix-style newlines with a newline ending every file
+[*]
+end_of_line = lf
+insert_final_newline = true
+
+# Indentation and formatting for all files
+[*]
+indent_style = space
+indent_size = 4
+charset = utf-8
+trim_trailing_whitespace = true
+
+# Java specific settings
+[*.java]
+indent_style = space
+indent_size = 4
+max_line_length = 120
+insert_final_newline = true
+
+# Properties files (e.g., application.properties)
+[*.properties]
+indent_style = space
+indent_size = 4
+charset = utf-8
+trim_trailing_whitespace = true
+
+# YAML files (e.g., application.yml)
+[*.yml]
+indent_style = space
+indent_size = 2
+charset = utf-8
+trim_trailing_whitespace = true
+
+# Markdown files (e.g., README.md)
+[*.md]
+trim_trailing_whitespace = false
+
+# JSON files (e.g., package.json)
+[*.json]
+indent_style = space
+indent_size = 2
+
+# HTML files (e.g., Thymeleaf templates)
+[*.html]
+indent_style = space
+indent_size = 4
+
+# CSS files
+[*.css]
+indent_style = space
+indent_size = 2
+
+# JavaScript files
+[*.js]
+indent_style = space
+indent_size = 2
+
+# TypeScript files
+[*.ts]
+indent_style = space
+indent_size = 2
+
+# XML files (e.g., Spring configuration files)
+[*.xml]
+indent_style = space
+indent_size = 4
