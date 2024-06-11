@@ -3,7 +3,11 @@ package com.shashankp.financemanager.controller;
 import com.shashankp.financemanager.model.User;
 import com.shashankp.financemanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.swing.text.html.Option;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
@@ -17,7 +21,12 @@ public class UserController {
     }
 
     @GetMapping("/{username}")
-    public User getUserByUsername(@PathVariable String username) {
-        return userService.findByUsername(username);
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        Optional<User> userOptional = userService.findUserById(username);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        return ResponseEntity.ok(userOptional.get());
     }
 }
