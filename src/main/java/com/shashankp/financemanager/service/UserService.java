@@ -3,7 +3,6 @@ package com.shashankp.financemanager.service;
 import com.shashankp.financemanager.model.User;
 import com.shashankp.financemanager.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> findUserById(String username) {
+    public Optional<User> findUserByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 }

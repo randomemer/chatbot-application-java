@@ -11,11 +11,16 @@ public class Income {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String source;
+
     private double amount;
+
+    @Column(nullable = false)
+    private String source;
+
+    @Column(nullable = false)
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 }

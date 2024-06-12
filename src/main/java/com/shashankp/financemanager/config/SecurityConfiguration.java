@@ -25,6 +25,7 @@ public class SecurityConfiguration {
     }
 
 
+    // https://wankhedeshubham.medium.com/spring-boot-security-with-userdetailsservice-and-custom-authentication-provider-3df3a188993f
     @Bean
     public AuthenticationProvider configure(AuthenticationManagerBuilder auth) throws Exception {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();

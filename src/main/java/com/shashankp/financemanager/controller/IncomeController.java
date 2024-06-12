@@ -1,25 +1,41 @@
 package com.shashankp.financemanager.controller;
 
 import com.shashankp.financemanager.model.Income;
+import com.shashankp.financemanager.model.User;
 import com.shashankp.financemanager.service.IncomeService;
+import com.shashankp.financemanager.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/incomes")
 public class IncomeController {
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private IncomeService incomeService;
 
     @PostMapping
-    public Income createIncome(@RequestBody Income income ) {
-        return incomeService.saveIncome(income);
+    public ResponseEntity<Income> createIncome(@RequestBody Income income, Principal principal) {
+        Optional<User> userOptional = userService.findUserByUsername(principal.getName());
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+
+        income.setUser(userOptional.get());
+        Income savedIncome = incomeService.saveIncome(income);
+        
+        return ResponseEntity.ok(savedIncome);
     }
 
     @GetMapping("/user/{userId}")
-    public List<Income> getIncomesByUserId(@PathVariable Long id) {
-        return incomeService.findIncomesByUserId(id);
+    public List<Income> getIncomesByUserId(@PathVariable Long userId) {
+        return incomeService.findIncomesByUserId(userId);
     }
 }
