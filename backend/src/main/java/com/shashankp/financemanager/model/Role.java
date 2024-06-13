@@ -3,9 +3,11 @@ package com.shashankp.financemanager.model;
 import com.shashankp.financemanager.enumeration.RoleEnum;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Data
+@NoArgsConstructor
 public class Role {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

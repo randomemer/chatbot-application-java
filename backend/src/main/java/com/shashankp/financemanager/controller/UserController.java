@@ -23,7 +23,9 @@ public class UserController {
   @PostMapping("/login")
   public ResponseEntity<User> login(
       @RequestBody User user, HttpServletRequest request, HttpServletResponse response) {
-    return ResponseEntity.ok(userService.loginUser(user, request, response));
+    User body = userService.loginUser(user, request, response);
+    System.out.println(body.getRoles().size());
+    return ResponseEntity.ok(body);
   }
 
   @GetMapping("/{username}")
