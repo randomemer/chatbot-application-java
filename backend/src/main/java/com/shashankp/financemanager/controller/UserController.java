@@ -2,31 +2,37 @@ package com.shashankp.financemanager.controller;
 
 import com.shashankp.financemanager.model.User;
 import com.shashankp.financemanager.service.UserService;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-    @Autowired
-    private UserService userService;
+  @Autowired private UserService userService;
 
-    @PostMapping("/register")
-    public User registerUser(@RequestBody User user) {
-        System.out.println(user.toString());
-        return userService.saveUser(user);
+  @PostMapping("/register")
+  public ResponseEntity<User> register(@RequestBody User user) {
+    return ResponseEntity.status(HttpStatus.CREATED).body(userService.registerUser(user));
+  }
+
+  @PostMapping("/login")
+  public ResponseEntity<User> login(
+      @RequestBody User user, HttpServletRequest request, HttpServletResponse response) {
+    return ResponseEntity.ok(userService.loginUser(user, request, response));
+  }
+
+  @GetMapping("/{username}")
+  public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+    Optional<User> userOptional = userService.findUserByUsername(username);
+    if (userOptional.isEmpty()) {
+      return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/{username}")
-    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
-        Optional<User> userOptional = userService.findUserByUsername(username);
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(userOptional.get());
-    }
+    return ResponseEntity.ok(userOptional.get());
+  }
 }

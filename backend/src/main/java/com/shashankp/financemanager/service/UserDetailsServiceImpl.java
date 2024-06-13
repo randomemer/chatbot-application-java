@@ -14,19 +14,17 @@ import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
-    @Autowired
-    private UserRepository userRepository;
+  @Autowired private UserRepository userRepository;
 
-    public UserDetails loadUserByUsername(String username) {
-        Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isEmpty()) {
-            throw new UsernameNotFoundException(username);
-        }
-
-        User user = userOptional.get();
-
-        return new org.springframework.security.core.userdetails.User(
-            user.getUsername(), user.getPassword(), new HashSet<>()
-        );
+  public UserDetails loadUserByUsername(String username) {
+    Optional<User> userOptional = userRepository.findByUsername(username);
+    if (userOptional.isEmpty()) {
+      throw new UsernameNotFoundException(username);
     }
+
+    User user = userOptional.get();
+
+    return new org.springframework.security.core.userdetails.User(
+        user.getUsername(), user.getPassword(), new HashSet<>());
+  }
 }
