@@ -9,14 +9,13 @@ import java.util.List;
 
 @Service
 public class ExpenseService {
-    @Autowired
-    private ExpenseRepository expenseRepository;
+  @Autowired private ExpenseRepository expenseRepository;
 
-    public Expense saveExpense(Expense expense) {
-        return expenseRepository.save(expense);
-    }
+  public Expense saveExpense(Expense expense) {
+    return expenseRepository.save(expense);
+  }
 
-    public List<Expense> getExpensesByUserId(Long id) {
-        return expenseRepository.findByUserId(id);
-    }
+  public List<Expense> getExpensesByUserId(Long id) {
+    return expenseRepository.findByUserId(id);
+  }
 }
