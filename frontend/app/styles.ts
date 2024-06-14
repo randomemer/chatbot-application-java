@@ -7,4 +7,7 @@ export const IndexMain = styled("main")`
   align-items: center;
   gap: 1rem;
   min-height: 100vh;
+
+  background-image: url("/images/blob-scene-haikei.png");
+  background-size: cover;
 `;
