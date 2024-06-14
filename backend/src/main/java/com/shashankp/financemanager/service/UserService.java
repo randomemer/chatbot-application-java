@@ -6,6 +6,7 @@ import com.shashankp.financemanager.model.User;
 import com.shashankp.financemanager.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -41,6 +42,10 @@ public class UserService {
 
   public Optional<User> findUserByUsername(String username) {
     return userRepository.findByUsername(username);
+  }
+
+  public List<User> findAllUsers() {
+    return userRepository.findAll();
   }
 
   public User registerUser(User user) {

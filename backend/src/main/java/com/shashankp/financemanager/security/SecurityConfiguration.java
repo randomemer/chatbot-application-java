@@ -2,6 +2,7 @@ package com.shashankp.financemanager.security;
 
 import com.shashankp.financemanager.service.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -21,6 +23,9 @@ import org.springframework.security.web.context.SecurityContextRepository;
 @EnableWebSecurity
 @EnableMethodSecurity
 public class SecurityConfiguration {
+  @Value(value = "${server.servlet.session.cookie.name}")
+  private String sessionCookieName;
+
   @Autowired private UserDetailsServiceImpl userDetailsService;
 
   @Autowired private AuthEntryPoint authEntryPoint;
@@ -49,7 +54,16 @@ public class SecurityConfiguration {
     http.csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(
             (auth) -> auth.requestMatchers("/api/auth/*").permitAll().anyRequest().authenticated())
-        .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint));
+        .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint))
+        .logout(
+            logout ->
+                logout
+                    .logoutUrl("/api/auth/logout")
+                    .invalidateHttpSession(true)
+                    .deleteCookies(sessionCookieName)
+                    .logoutSuccessHandler(
+                        (request, response, authentication) ->
+                            SecurityContextHolder.clearContext()));
 
     return http.build();
   }

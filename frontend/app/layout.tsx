@@ -1,9 +1,9 @@
+import GlobalProvider from "@/components/global-provider";
+import { inter } from "@/lib/theme";
+// @ts-ignore
 import { AppRouterCacheProvider } from "@mui/material-nextjs/modern/v13-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Finance Manager",
@@ -19,8 +19,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <AppRouterCacheProvider>
-          <CssBaseline />
-          {children}
+          <GlobalProvider>
+            <CssBaseline />
+            {children}
+          </GlobalProvider>
         </AppRouterCacheProvider>
       </body>
     </html>
