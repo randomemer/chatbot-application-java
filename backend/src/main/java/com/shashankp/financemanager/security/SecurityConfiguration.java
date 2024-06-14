@@ -48,13 +48,7 @@ public class SecurityConfiguration {
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(
-            (auth) ->
-                auth.requestMatchers("/api/users/register", "/api/users/login")
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated())
-        //        .sessionManagement(
-        //            session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
+            (auth) -> auth.requestMatchers("/api/auth/*").permitAll().anyRequest().authenticated())
         .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint));
 
     return http.build();
