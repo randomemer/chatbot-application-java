@@ -7,20 +7,21 @@ import NextLink from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function RegisterPage() {
+export default function LoginPage() {
   const router = useRouter();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setLoading] = useState(false);
 
-  async function onRegister() {
+  async function onLogin() {
     setLoading(true);
     try {
       const body = { username: username.trim(), password };
-      const resp = await api.post("/auth/register", body);
+      const resp = api.post("/auth/login", body);
 
-      router.replace("/auth/login");
+      console.log("");
+      router.push("/dashboard");
     } catch (error) {
       console.error(error);
     }
@@ -29,7 +30,7 @@ export default function RegisterPage() {
 
   return (
     <Form>
-      <Typography variant="h5">Start Today</Typography>
+      <Typography variant="h5">Login</Typography>
 
       <FormFields>
         <TextField
@@ -40,21 +41,21 @@ export default function RegisterPage() {
         />
         <TextField
           label="Password"
-          variant="filled"
           type="password"
+          variant="filled"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
       </FormFields>
 
-      <FormBtn loading={isLoading} variant="contained" onClick={onRegister}>
-        Sign Up
+      <FormBtn variant="contained" loading={isLoading} onClick={onLogin}>
+        Login
       </FormBtn>
 
       <Typography sx={{ alignSelf: "flex-end" }} variant="body2">
-        Existing user?{" "}
-        <Link replace component={NextLink} href="/auth/login">
-          Login &rarr;
+        Don't have an account?{" "}
+        <Link replace component={NextLink} href="/auth/register">
+          Sign up &rarr;
         </Link>
       </Typography>
     </Form>

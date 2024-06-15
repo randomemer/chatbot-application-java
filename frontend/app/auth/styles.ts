@@ -1,4 +1,5 @@
-import { Button, Card } from "@mui/material";
+import { LoadingButton } from "@mui/lab";
+import { Card } from "@mui/material";
 import styled from "@mui/material/styles/styled";
 
 export const Main = styled("main")`
@@ -14,7 +15,7 @@ export const FormContainer = styled(Card)`
   height: 27rem;
 
   & > * {
-    flex: 1;
+    width: 50%;
   }
 `;
 
@@ -36,6 +37,6 @@ export const Form = styled("form")`
   padding: 3rem;
 `;
 
-export const RegisterBtn = styled(Button)`
+export const FormBtn = styled(LoadingButton)`
   align-self: flex-end;
 `;
