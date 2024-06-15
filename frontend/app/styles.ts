@@ -1,3 +1,4 @@
+import homeBgImg from "@/public/images/home-bg.png";
 import { styled } from "@mui/material";
 
 export const IndexMain = styled("main")`
@@ -8,6 +9,6 @@ export const IndexMain = styled("main")`
   gap: 1rem;
   min-height: 100vh;
 
-  background-image: url("/images/blob-scene-haikei.png");
+  background-image: url(${homeBgImg.src});
   background-size: cover;
 `;

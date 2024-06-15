@@ -18,9 +18,9 @@ export default function LoginPage() {
     setLoading(true);
     try {
       const body = { username: username.trim(), password };
-      const resp = api.post("/auth/login", body);
+      const resp = await api.post("/auth/login", body);
 
-      console.log("");
+      console.log("login resp", resp);
       router.push("/dashboard");
     } catch (error) {
       console.error(error);

@@ -1,6 +1,7 @@
 import { LoadingButton } from "@mui/lab";
 import { Card } from "@mui/material";
 import styled from "@mui/material/styles/styled";
+import Image from "next/image";
 
 export const Main = styled("main")`
   display: flex;
@@ -19,7 +20,7 @@ export const FormContainer = styled(Card)`
   }
 `;
 
-export const BannerImage = styled("img")`
+export const BannerImage = styled(Image)`
   width: 100%;
   object-fit: cover;
 `;

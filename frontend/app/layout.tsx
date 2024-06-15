@@ -1,7 +1,6 @@
 import GlobalProvider from "@/components/global-provider";
 import { inter } from "@/lib/theme";
-// @ts-ignore
-import { AppRouterCacheProvider } from "@mui/material-nextjs/modern/v13-appRouter";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import CssBaseline from "@mui/material/CssBaseline";
 import type { Metadata } from "next";
 
