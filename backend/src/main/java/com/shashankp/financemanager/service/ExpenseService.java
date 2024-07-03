@@ -1,11 +1,11 @@
 package com.shashankp.financemanager.service;
 
 import com.shashankp.financemanager.model.Expense;
+import com.shashankp.financemanager.model.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.repository.ExpenseRepository;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ExpenseService {
@@ -17,5 +17,9 @@ public class ExpenseService {
 
   public List<Expense> getExpensesByUserId(Long id) {
     return expenseRepository.findByUserId(id);
+  }
+
+  public TransactionTotalDTO getTotalExpensesForMonth(int month, int year) {
+    return expenseRepository.findTotalForMonth(month, year);
   }
 }

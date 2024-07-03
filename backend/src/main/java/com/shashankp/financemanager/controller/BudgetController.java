@@ -2,6 +2,7 @@ package com.shashankp.financemanager.controller;
 
 import com.shashankp.financemanager.model.Budget;
 import com.shashankp.financemanager.model.User;
+import com.shashankp.financemanager.model.dto.BudgetSummaryDTO;
 import com.shashankp.financemanager.service.BudgetService;
 import com.shashankp.financemanager.service.UserService;
 import java.security.Principal;
@@ -34,5 +35,11 @@ public class BudgetController {
   @GetMapping("/user/{userId}")
   public List<Budget> getBudgetsByUserId(@PathVariable Long userId) {
     return budgetService.getBudgetsByUserId(userId);
+  }
+
+  @GetMapping("/user/{userId}/summary")
+  public List<BudgetSummaryDTO> getBudgetSummary(
+      @PathVariable Long userId, @RequestParam int month, @RequestParam int year) {
+    return budgetService.getBudgetSummary(userId, month, year);
   }
 }
