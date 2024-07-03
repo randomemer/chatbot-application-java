@@ -19,7 +19,7 @@ public class IncomeService {
     return incomeRepository.findByUserId(id);
   }
 
-  public TransactionTotalDTO findTotalIncomesForMonth(int month, int year) {
-    return incomeRepository.findTotalForMonth(month, year);
+  public TransactionTotalDTO findTotalIncomesForMonth(Long userId, int month, int year) {
+    return incomeRepository.findTotalForMonth(userId, month, year);
   }
 }

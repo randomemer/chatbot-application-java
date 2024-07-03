@@ -37,9 +37,9 @@ public class ExpenseController {
     return expenseService.getExpensesByUserId(userId);
   }
 
-  @GetMapping("/total")
+  @GetMapping("/user/{userId}/total")
   public TransactionTotalDTO getTotalExpensesForMonth(
-      @RequestParam int month, @RequestParam int year) {
-    return expenseService.getTotalExpensesForMonth(month, year);
+      @PathVariable Long userId, @RequestParam int month, @RequestParam int year) {
+    return expenseService.getTotalExpensesForMonth(userId, month, year);
   }
 }

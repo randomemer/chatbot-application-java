@@ -19,7 +19,7 @@ public class ExpenseService {
     return expenseRepository.findByUserId(id);
   }
 
-  public TransactionTotalDTO getTotalExpensesForMonth(int month, int year) {
-    return expenseRepository.findTotalForMonth(month, year);
+  public TransactionTotalDTO getTotalExpensesForMonth(Long userId, int month, int year) {
+    return expenseRepository.findTotalForMonth(userId, month, year);
   }
 }

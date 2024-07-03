@@ -15,32 +15,31 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/incomes")
 public class IncomeController {
-    @Autowired
-    private UserService userService;
+  @Autowired private UserService userService;
 
-    @Autowired
-    private IncomeService incomeService;
+  @Autowired private IncomeService incomeService;
 
-    @PostMapping
-    public ResponseEntity<Income> createIncome(@RequestBody Income income, Principal principal) {
-        Optional<User> userOptional = userService.findUserByUsername(principal.getName());
-        if (userOptional.isEmpty()) {
-            return ResponseEntity.notFound().build();
-        }
-
-        income.setUser(userOptional.get());
-        Income savedIncome = incomeService.saveIncome(income);
-        
-        return ResponseEntity.ok(savedIncome);
+  @PostMapping
+  public ResponseEntity<Income> createIncome(@RequestBody Income income, Principal principal) {
+    Optional<User> userOptional = userService.findUserByUsername(principal.getName());
+    if (userOptional.isEmpty()) {
+      return ResponseEntity.notFound().build();
     }
 
-    @GetMapping("/user/{userId}")
-    public List<Income> getIncomesByUserId(@PathVariable Long userId) {
-        return incomeService.findIncomesByUserId(userId);
-    }
+    income.setUser(userOptional.get());
+    Income savedIncome = incomeService.saveIncome(income);
 
-    @GetMapping("/total")
-    public TransactionTotalDTO getTotalForMonth(@RequestParam int month, @RequestParam int year) {
-        return incomeService.findTotalIncomesForMonth(month, year);
-    }
+    return ResponseEntity.ok(savedIncome);
+  }
+
+  @GetMapping("/user/{userId}")
+  public List<Income> getIncomesByUserId(@PathVariable Long userId) {
+    return incomeService.findIncomesByUserId(userId);
+  }
+
+  @GetMapping("/user/{userId}/total")
+  public TransactionTotalDTO getTotalForMonth(
+      @PathVariable Long userId, @RequestParam int month, @RequestParam int year) {
+    return incomeService.findTotalIncomesForMonth(userId, month, year);
+  }
 }

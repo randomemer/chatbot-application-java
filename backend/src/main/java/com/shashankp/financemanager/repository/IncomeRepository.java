@@ -15,7 +15,11 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
     SELECT new com.shashankp.financemanager.model.dto.TransactionTotalDTO(
       SUM(i.amount), MONTH(i.date), YEAR(i.date)
     ) FROM Income i
-    WHERE YEAR(i.date) = :year AND MONTH(i.date) = :month
+    WHERE
+      i.user.id = :userId
+      AND YEAR(i.date) = :year
+      AND MONTH(i.date) = :month
     """)
-  TransactionTotalDTO findTotalForMonth(@Param("month") int month, @Param("year") int year);
+  TransactionTotalDTO findTotalForMonth(
+      @Param("userId") Long userId, @Param("month") int month, @Param("year") int year);
 }

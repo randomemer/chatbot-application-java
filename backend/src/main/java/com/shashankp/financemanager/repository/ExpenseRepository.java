@@ -15,8 +15,12 @@ public interface ExpenseRepository extends JpaRepository<Expense, Long> {
     SELECT new com.shashankp.financemanager.model.dto.TransactionTotalDTO(
       SUM(e.amount), MONTH(e.date), YEAR(e.date)
     ) FROM Expense e
-    WHERE YEAR(e.date) = :year AND MONTH(e.date) = :month
+    WHERE
+      e.user.id = :userId
+      AND YEAR(e.date) = :year
+      AND MONTH(e.date) = :month
     GROUP BY MONTH(e.date), YEAR(e.date)
     """)
-  TransactionTotalDTO findTotalForMonth(@Param("month") int month, @Param("year") int year);
+  TransactionTotalDTO findTotalForMonth(
+      @Param("userId") Long userId, @Param("month") int month, @Param("year") int year);
 }
