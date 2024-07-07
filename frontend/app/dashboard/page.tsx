@@ -1,15 +1,17 @@
 "use client";
 
 import ExpenseDialog from "@/components/expense-dialog";
+import ExpensesTab from "@/components/expenses-tab";
 import { fetcher } from "@/lib/api";
-import { Expense, User } from "@/lib/types";
+import { TransactionSummary, User } from "@/lib/types";
 import {
   AddRounded,
   CallMadeRounded,
   CallReceivedRounded,
   SavingsRounded,
 } from "@mui/icons-material";
-import { SpeedDial, SpeedDialAction, useTheme } from "@mui/material";
+import { TabContext, TabList, TabPanel } from "@mui/lab";
+import { Box, SpeedDial, SpeedDialAction, Tab, useTheme } from "@mui/material";
 import { green, purple, red } from "@mui/material/colors";
 import { useState } from "react";
 import useSWR from "swr";
@@ -32,11 +34,11 @@ export default function DashboardPage() {
     year: String(date.getFullYear()),
   });
 
-  const { data: totalExpenses } = useSWR<Expense[]>(
+  const { data: totalExpenses } = useSWR<TransactionSummary>(
     () => user && `/expenses/user/${user.id}/total?${query}`,
     fetcher
   );
-  const { data: totalIncomes } = useSWR(
+  const { data: totalIncomes } = useSWR<TransactionSummary>(
     () => user && `/incomes/user/${user.id}/total?${query}`,
     fetcher
   );
@@ -45,6 +47,7 @@ export default function DashboardPage() {
     fetcher
   );
 
+  const [tab, setTab] = useState("0");
   const [isExpenseDialogOpen, setExpenseDialogOpen] = useState(false);
 
   return (
@@ -61,7 +64,9 @@ export default function DashboardPage() {
               }}
             >
               <SummaryCardTitle>Expenses</SummaryCardTitle>
-              <SummaryNumber>{0}</SummaryNumber>
+              <SummaryNumber>
+                {!!totalExpenses ? totalExpenses.amount.toLocaleString() : 0} ₹
+              </SummaryNumber>
             </SummaryCard>
 
             <SummaryCard
@@ -71,7 +76,9 @@ export default function DashboardPage() {
               }}
             >
               <SummaryCardTitle>Incomes</SummaryCardTitle>
-              <SummaryNumber>{0}</SummaryNumber>
+              <SummaryNumber>
+                {!!totalIncomes ? totalIncomes.amount.toLocaleString() : 0} ₹
+              </SummaryNumber>
             </SummaryCard>
 
             <SummaryCard
@@ -86,7 +93,31 @@ export default function DashboardPage() {
           </SummaryContainer>
         </section>
 
-        <section></section>
+        <section>
+          <TabContext value={tab}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
+              <TabList onChange={(e, val) => setTab(val)}>
+                <Tab
+                  value="0"
+                  label="Expenses"
+                  icon={<CallMadeRounded />}
+                  iconPosition="start"
+                />
+                <Tab
+                  value="1"
+                  label="Incomes"
+                  icon={<CallReceivedRounded />}
+                  iconPosition="start"
+                />
+              </TabList>
+            </Box>
+
+            <TabPanel value="0">
+              <ExpensesTab user={user} />
+            </TabPanel>
+            <TabPanel value="1"></TabPanel>
+          </TabContext>
+        </section>
 
         <SpeedDial
           ariaLabel="App actions"

@@ -12,6 +12,7 @@ export interface Expense {
   id: number;
   user: User;
   amount: number;
+  description: string;
   date: string;
   category: any;
 }
@@ -26,4 +27,10 @@ export interface ExpenseInput {
   date: string;
   description: string;
   category_id: number | null;
+}
+
+export interface TransactionSummary {
+  amount: number;
+  month: number;
+  year: number;
 }

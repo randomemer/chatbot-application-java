@@ -1,0 +1,51 @@
+{
+	"version": "2.0.0",
+	"presentation": {
+		"echo": false,
+		"reveal": "always",
+		"focus": false,
+		"panel": "dedicated",
+		"showReuseMessage": true
+	},
+	"tasks": [
+		{
+			"label": "Create Terminals",
+			"dependsOn": ["frontend-terminal", "backend-terminal"],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"runOptions": {
+				"runOn": "folderOpen"
+			}
+		},
+		{
+			"label": "frontend-terminal",
+			"type": "shell",
+			"command": "",
+			"options": {
+				"cwd": "${workspaceFolder}/frontend",
+				"shell": {
+					"executable": "cmd.exe",
+					"args": []
+				}
+			},
+			"isBackground": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "backend-terminal",
+			"type": "shell",
+			"command": "",
+			"options": {
+				"cwd": "${workspaceFolder}/backend",
+				"shell": {
+					"executable": "cmd.exe",
+					"args": ["cd backend"]
+				}
+			},
+			"isBackground": true,
+			"problemMatcher": []
+		}
+	]
+}
