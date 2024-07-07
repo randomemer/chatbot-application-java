@@ -19,6 +19,7 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
       i.user.id = :userId
       AND YEAR(i.date) = :year
       AND MONTH(i.date) = :month
+    GROUP BY MONTH(i.date), YEAR(i.date)
     """)
   TransactionTotalDTO findTotalForMonth(
       @Param("userId") Long userId, @Param("month") int month, @Param("year") int year);

@@ -7,6 +7,7 @@ export const inter = Inter({
 });
 
 export const theme = createTheme({
+  palette: {},
   typography: { fontFamily: "inherit" },
   components: {
     MuiCssBaseline: {

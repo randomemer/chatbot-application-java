@@ -5,7 +5,7 @@ import api from "@/lib/api";
 import { Link, TextField, Typography } from "@mui/material";
 import NextLink from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { FormEventHandler, useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -28,8 +28,13 @@ export default function LoginPage() {
     setLoading(false);
   }
 
+  const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    onLogin();
+  };
+
   return (
-    <Form>
+    <Form onSubmit={onSubmit}>
       <Typography variant="h5">Login</Typography>
 
       <FormFields>
@@ -48,7 +53,12 @@ export default function LoginPage() {
         />
       </FormFields>
 
-      <FormBtn variant="contained" loading={isLoading} onClick={onLogin}>
+      <FormBtn
+        type="submit"
+        variant="contained"
+        loading={isLoading}
+        onClick={onLogin}
+      >
         Login
       </FormBtn>
 
