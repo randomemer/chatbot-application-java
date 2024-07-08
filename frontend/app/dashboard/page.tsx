@@ -2,6 +2,7 @@
 
 import ExpenseDialog from "@/components/expense-dialog";
 import ExpensesTab from "@/components/expenses-tab";
+import IncomeDialog from "@/components/income-dialog";
 import { fetcher } from "@/lib/api";
 import { TransactionSummary, User } from "@/lib/types";
 import {
@@ -49,6 +50,8 @@ export default function DashboardPage() {
 
   const [tab, setTab] = useState("0");
   const [isExpenseDialogOpen, setExpenseDialogOpen] = useState(false);
+  const [isIncomeDialogOpen, setIncomeDialogOpen] = useState(false);
+  0;
 
   return (
     <>
@@ -131,8 +134,9 @@ export default function DashboardPage() {
             onClick={() => setExpenseDialogOpen(true)}
           />
           <SpeedDialAction
-            icon={<CallReceivedRounded color="success" />}
             tooltipTitle="Add Income"
+            icon={<CallReceivedRounded color="success" />}
+            onClick={() => setIncomeDialogOpen(true)}
           />
           <SpeedDialAction
             icon={<SavingsRounded color="primary" />}
@@ -143,8 +147,12 @@ export default function DashboardPage() {
 
       <ExpenseDialog
         isOpen={isExpenseDialogOpen}
-        isEdit={false}
         onClose={() => setExpenseDialogOpen(false)}
+      />
+
+      <IncomeDialog
+        isOpen={isIncomeDialogOpen}
+        onClose={() => setIncomeDialogOpen(false)}
       />
     </>
   );

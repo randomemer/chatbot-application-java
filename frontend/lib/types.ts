@@ -10,11 +10,19 @@ export interface Authority {
 
 export interface Expense {
   id: number;
-  user: User;
   amount: number;
   description: string;
   date: string;
   category: any;
+  user: User;
+}
+
+export interface Income {
+  id: number;
+  amount: number;
+  source: string;
+  date: string;
+  user: User;
 }
 
 export interface ExpenseCategory {
@@ -24,9 +32,15 @@ export interface ExpenseCategory {
 
 export interface ExpenseInput {
   amount: number;
-  date: string;
   description: string;
+  date: string;
   category_id: number | null;
+}
+
+export interface IncomeInput {
+  amount: number;
+  source: string;
+  date: string;
 }
 
 export interface TransactionSummary {

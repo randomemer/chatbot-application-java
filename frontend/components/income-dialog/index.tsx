@@ -1,50 +1,35 @@
-import api, { fetcher } from "@/lib/api";
-import { ExpenseCategory, ExpenseInput } from "@/lib/types";
+import { CustomDialogContent } from "@/components/expense-dialog/styles";
+import api from "@/lib/api";
+import { Income, IncomeInput } from "@/lib/types";
 import { LoadingButton } from "@mui/lab";
 import {
   Button,
   Dialog,
   DialogActions,
   DialogTitle,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Select,
   TextField,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import { MouseEventHandler, useState } from "react";
-import useSWR from "swr";
-import { CustomDialogContent } from "./styles";
 
-interface ExpenseDialogProps {
-  isEdit?: Optional<boolean>;
+interface IncomeDialogProps {
   isOpen?: Optional<boolean>;
+  editIncome?: Optional<Income>;
   onClose: () => void;
 }
 
-export default function ExpenseDialog(props: ExpenseDialogProps) {
+export default function IncomeDialog(props: IncomeDialogProps) {
   const [isLoading, setLoading] = useState(false);
 
   const [amount, setAmount] = useState("");
-  const [desc, setDesc] = useState("");
+  const [source, setSource] = useState("");
   const [date, setDate] = useState(dayjs(new Date()));
-  const [category, setCategory] = useState(-1);
-
-  const { data: categories } = useSWR<ExpenseCategory[]>(
-    "/expense-categories",
-    {
-      fallbackData: [],
-      fetcher: fetcher,
-    }
-  );
 
   const resetState = () => {
     setAmount("");
-    setDesc("");
+    setSource("");
     setDate(dayjs(new Date()));
-    setCategory(-1);
   };
 
   const onClose = () => {
@@ -56,15 +41,14 @@ export default function ExpenseDialog(props: ExpenseDialogProps) {
     event.preventDefault();
     setLoading(true);
     try {
-      const data: ExpenseInput = {
+      const data: IncomeInput = {
         amount: Number(amount),
         date: date.toISOString().split("T")[0],
-        description: desc,
-        category_id: category !== -1 ? category : null,
+        source: source,
       };
 
-      const resp = await api.post("/expenses", data);
-      console.log(resp);
+      const resp = await api.post("/incomes", data);
+      console.log("Created Income", resp);
 
       onClose();
     } catch (error) {
@@ -74,13 +58,9 @@ export default function ExpenseDialog(props: ExpenseDialogProps) {
   };
 
   return (
-    <Dialog
-      open={!!props.isOpen}
-      onClose={onClose}
-      PaperProps={{ component: "form" }}
-    >
+    <Dialog open={!!props.isOpen} onClose={props.onClose}>
       <DialogTitle>
-        {!props.isEdit ? "Create Expense" : "Edit Expense"}
+        {!props.editIncome ? "Create Income" : "Edit Income"}
       </DialogTitle>
 
       <CustomDialogContent className="gap-4">
@@ -92,27 +72,10 @@ export default function ExpenseDialog(props: ExpenseDialogProps) {
         />
 
         <TextField
-          label="Description"
-          value={desc}
-          onChange={(e) => setDesc(e.target.value)}
+          label="Source"
+          value={source}
+          onChange={(e) => setSource(e.target.value)}
         />
-
-        <FormControl>
-          <InputLabel id="expense-category-id">Category</InputLabel>
-          <Select
-            label="Category"
-            id="expense-category-select"
-            labelId="expense-category-id"
-            value={category}
-            onChange={(e) => setCategory(e.target.value as number)}
-          >
-            {categories?.map((item) => (
-              <MenuItem key={item.id} value={item.id}>
-                {item.name}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
 
         <DatePicker
           label="Date"
@@ -131,7 +94,7 @@ export default function ExpenseDialog(props: ExpenseDialogProps) {
           color="primary"
           onClick={(e) => onSubmit(e)}
         >
-          {!props.isEdit ? "Create" : "Save"}
+          {!props.editIncome ? "Create" : "Save"}
         </LoadingButton>
       </DialogActions>
     </Dialog>
