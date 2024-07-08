@@ -21,7 +21,7 @@ import useSWR from "swr";
 import { AmountText, ListItemSecondary } from "./styles";
 
 interface ExpensesTabProps {
-  user?: User | undefined;
+  user?: Optional<User>;
 }
 
 export default function ExpensesTab(props: ExpensesTabProps) {

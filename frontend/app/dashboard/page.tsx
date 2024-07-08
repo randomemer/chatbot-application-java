@@ -3,6 +3,7 @@
 import ExpenseDialog from "@/components/expense-dialog";
 import ExpensesTab from "@/components/expenses-tab";
 import IncomeDialog from "@/components/income-dialog";
+import IncomesTab from "@/components/incomes-tab";
 import { fetcher } from "@/lib/api";
 import { TransactionSummary, User } from "@/lib/types";
 import {
@@ -118,7 +119,9 @@ export default function DashboardPage() {
             <TabPanel value="0">
               <ExpensesTab user={user} />
             </TabPanel>
-            <TabPanel value="1"></TabPanel>
+            <TabPanel value="1">
+              <IncomesTab user={user} />
+            </TabPanel>
           </TabContext>
         </section>
 
