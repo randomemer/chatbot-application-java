@@ -1,4 +1,4 @@
-package com.shashankp.financemanager.model.dto;
+package com.shashankp.financemanager.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

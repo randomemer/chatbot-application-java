@@ -1,8 +1,8 @@
 package com.shashankp.financemanager.controller;
 
+import com.shashankp.financemanager.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.model.Income;
 import com.shashankp.financemanager.model.User;
-import com.shashankp.financemanager.model.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.service.IncomeService;
 import com.shashankp.financemanager.service.UserService;
 import java.security.Principal;

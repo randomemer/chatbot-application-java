@@ -1,7 +1,7 @@
 package com.shashankp.financemanager.repository;
 
+import com.shashankp.financemanager.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.model.Income;
-import com.shashankp.financemanager.model.dto.TransactionTotalDTO;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +12,7 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
 
   @Query(
       """
-    SELECT new com.shashankp.financemanager.model.dto.TransactionTotalDTO(
+    SELECT new com.shashankp.financemanager.dto.TransactionTotalDTO(
       SUM(i.amount), MONTH(i.date), YEAR(i.date)
     ) FROM Income i
     WHERE

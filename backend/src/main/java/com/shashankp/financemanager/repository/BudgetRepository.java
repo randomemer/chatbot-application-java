@@ -1,7 +1,7 @@
 package com.shashankp.financemanager.repository;
 
+import com.shashankp.financemanager.dto.BudgetSummaryDTO;
 import com.shashankp.financemanager.model.Budget;
-import com.shashankp.financemanager.model.dto.BudgetSummaryDTO;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +12,7 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
 
   @Query(
       """
-    SELECT new com.shashankp.financemanager.model.dto.BudgetSummaryDTO(
+    SELECT new com.shashankp.financemanager.dto.BudgetSummaryDTO(
         b.id, b.user.id, b.amount, b.category.id, ec.name, COALESCE(SUM(e.amount), 0)
     )
     FROM Budget b

@@ -1,7 +1,7 @@
 package com.shashankp.financemanager.service;
 
+import com.shashankp.financemanager.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.model.Income;
-import com.shashankp.financemanager.model.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.repository.IncomeRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
