@@ -12,17 +12,19 @@ import {
   CallReceivedRounded,
   SavingsRounded,
 } from "@mui/icons-material";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
-import { Box, SpeedDial, SpeedDialAction, Tab, useTheme } from "@mui/material";
+import { TabContext, TabPanel } from "@mui/lab";
+import { Box, SpeedDial, SpeedDialAction, useTheme } from "@mui/material";
 import { green, purple, red } from "@mui/material/colors";
 import { useState } from "react";
 import useSWR from "swr";
 import {
+  CustomTabList,
   Main,
   SummaryCard,
   SummaryCardTitle,
   SummaryContainer,
   SummaryNumber,
+  TransactionTab,
   Welcome,
 } from "./styles";
 
@@ -100,20 +102,20 @@ export default function DashboardPage() {
         <section>
           <TabContext value={tab}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <TabList onChange={(e, val) => setTab(val)}>
-                <Tab
+              <CustomTabList onChange={(e, val) => setTab(val)}>
+                <TransactionTab
                   value="0"
                   label="Expenses"
                   icon={<CallMadeRounded />}
                   iconPosition="start"
                 />
-                <Tab
+                <TransactionTab
                   value="1"
                   label="Incomes"
                   icon={<CallReceivedRounded />}
                   iconPosition="start"
                 />
-              </TabList>
+              </CustomTabList>
             </Box>
 
             <TabPanel value="0">

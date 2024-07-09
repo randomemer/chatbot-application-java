@@ -1,7 +1,7 @@
 import {
   AmountText,
-  ListItemSecondary,
-} from "@/components/expenses-tab/styles";
+  TransactionItemActions,
+} from "@/components/expense-item/styles";
 import { fetcher } from "@/lib/api";
 import { Income, User } from "@/lib/types";
 import { CallReceivedRounded, MoreVertRounded } from "@mui/icons-material";
@@ -57,7 +57,7 @@ export default function IncomesTab(props: IncomesTabProps) {
               primary={item.source}
               secondary={dayjs(item.date).toDate().toLocaleDateString()}
             />
-            <ListItemSecondary>
+            <TransactionItemActions>
               <AmountText>₹ {item.amount.toLocaleString()}</AmountText>
               <IconButton
                 ref={(el) => {
@@ -67,7 +67,7 @@ export default function IncomesTab(props: IncomesTabProps) {
               >
                 <MoreVertRounded />
               </IconButton>
-            </ListItemSecondary>
+            </TransactionItemActions>
           </ListItem>
         ))}
       </List>

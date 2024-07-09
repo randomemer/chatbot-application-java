@@ -1,24 +1,16 @@
 import { fetcher } from "@/lib/api";
 import { Expense, User } from "@/lib/types";
+import { DeleteRounded, EditRounded } from "@mui/icons-material";
 import {
-  CallMadeRounded,
-  DeleteRounded,
-  EditRounded,
-  MoreVertRounded,
-} from "@mui/icons-material";
-import {
-  IconButton,
   List,
-  ListItem,
   ListItemIcon,
   ListItemText,
   Menu,
   MenuItem,
 } from "@mui/material";
-import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import useSWR from "swr";
-import { AmountText, ListItemSecondary } from "./styles";
+import ExpenseItem from "../expense-item";
 
 interface ExpensesTabProps {
   user?: Optional<User>;
@@ -50,26 +42,14 @@ export default function ExpensesTab(props: ExpensesTabProps) {
     <>
       <List>
         {expenses?.map((item, i) => (
-          <ListItem key={i}>
-            <ListItemIcon>
-              <CallMadeRounded color="error" />
-            </ListItemIcon>
-            <ListItemText
-              primary={item.description}
-              secondary={dayjs(item.date).toDate().toLocaleDateString()}
-            />
-            <ListItemSecondary>
-              <AmountText>₹ {item.amount.toLocaleString()}</AmountText>
-              <IconButton
-                ref={(el) => {
-                  itemRefs.current[i] = el;
-                }}
-                onClick={() => onOptionsClick(i)}
-              >
-                <MoreVertRounded />
-              </IconButton>
-            </ListItemSecondary>
-          </ListItem>
+          <ExpenseItem
+            key={i}
+            ref={(el) => {
+              itemRefs.current[i] = el;
+            }}
+            expense={item}
+            onOptionsClick={() => onOptionsClick(i)}
+          />
         ))}
       </List>
 

@@ -1,5 +1,7 @@
+import { TabList } from "@mui/lab";
 import { Card } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import Tab from "@mui/material/Tab";
 
 export const Main = styled("main")`
   max-width: 75rem;
@@ -32,4 +34,12 @@ export const SummaryCardTitle = styled("h3")`
 export const SummaryNumber = styled("p")`
   align-self: flex-end;
   font-size: 24px;
+`;
+
+export const TransactionTab = styled(Tab)`
+  min-height: unset;
+`;
+
+export const CustomTabList = styled(TabList)`
+  min-height: unset;
 `;
