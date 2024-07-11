@@ -1,16 +1,10 @@
+import ExpenseItem from "@/components/expense-item";
+import TransactionMenu from "@/components/transaction-menu";
 import { fetcher } from "@/lib/api";
 import { Expense, User } from "@/lib/types";
-import { DeleteRounded, EditRounded } from "@mui/icons-material";
-import {
-  List,
-  ListItemIcon,
-  ListItemText,
-  Menu,
-  MenuItem,
-} from "@mui/material";
+import { List } from "@mui/material";
 import { useRef, useState } from "react";
 import useSWR from "swr";
-import ExpenseItem from "../expense-item";
 
 interface ExpensesTabProps {
   user?: Optional<User>;
@@ -25,11 +19,6 @@ export default function ExpensesTab(props: ExpensesTabProps) {
   const itemRefs = useRef<(HTMLElement | null)[]>([]);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [selectedIndex, setIndex] = useState<number | null>(null);
-
-  const onMenuClose = () => {
-    setIndex(null);
-    setMenuOpen(false);
-  };
 
   const onOptionsClick = (index: number) => {
     setIndex(index);
@@ -53,34 +42,15 @@ export default function ExpensesTab(props: ExpensesTabProps) {
         ))}
       </List>
 
-      <Menu
-        open={isMenuOpen}
+      <TransactionMenu
+        isOpen={isMenuOpen}
         anchorEl={
           selectedIndex != null ? itemRefs.current[selectedIndex] : null
         }
-        onClose={onMenuClose}
-      >
-        <MenuItem
-          onClick={() => {
-            onMenuClose();
-          }}
-        >
-          <ListItemIcon>
-            <EditRounded fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Edit</ListItemText>
-        </MenuItem>
-        <MenuItem
-          onClick={() => {
-            onMenuClose();
-          }}
-        >
-          <ListItemIcon>
-            <DeleteRounded fontSize="small" />
-          </ListItemIcon>
-          <ListItemText>Delete</ListItemText>
-        </MenuItem>
-      </Menu>
+        onClose={() => setMenuOpen(false)}
+        onEdit={() => {}}
+        onDelete={() => {}}
+      />
     </>
   );
 }

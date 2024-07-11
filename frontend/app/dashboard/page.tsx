@@ -71,7 +71,7 @@ export default function DashboardPage() {
             >
               <SummaryCardTitle>Expenses</SummaryCardTitle>
               <SummaryNumber>
-                {!!totalExpenses ? totalExpenses.amount.toLocaleString() : 0} ₹
+                ₹ {!!totalExpenses ? totalExpenses.amount.toLocaleString() : 0}
               </SummaryNumber>
             </SummaryCard>
 
@@ -83,7 +83,7 @@ export default function DashboardPage() {
             >
               <SummaryCardTitle>Incomes</SummaryCardTitle>
               <SummaryNumber>
-                {!!totalIncomes ? totalIncomes.amount.toLocaleString() : 0} ₹
+                ₹ {!!totalIncomes ? totalIncomes.amount.toLocaleString() : 0}
               </SummaryNumber>
             </SummaryCard>
 

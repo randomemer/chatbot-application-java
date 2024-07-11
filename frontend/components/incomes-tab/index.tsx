@@ -15,6 +15,7 @@ import {
 import dayjs from "dayjs";
 import { useRef, useState } from "react";
 import useSWR from "swr";
+import TransactionMenu from "../transaction-menu";
 
 interface IncomesTabProps {
   user?: Optional<User>;
@@ -32,11 +33,6 @@ export default function IncomesTab(props: IncomesTabProps) {
   const itemRefs = useRef<(HTMLElement | null)[]>([]);
   const [isMenuOpen, setMenuOpen] = useState(false);
   const [selectedIndex, setIndex] = useState<number | null>(null);
-
-  const onMenuClose = () => {
-    setIndex(null);
-    setMenuOpen(false);
-  };
 
   const onOptionsClick = (index: number) => {
     setIndex(index);
@@ -71,6 +67,16 @@ export default function IncomesTab(props: IncomesTabProps) {
           </ListItem>
         ))}
       </List>
+
+      <TransactionMenu
+        isOpen={isMenuOpen}
+        anchorEl={
+          selectedIndex != null ? itemRefs.current[selectedIndex] : null
+        }
+        onClose={() => setMenuOpen(false)}
+        onEdit={() => {}}
+        onDelete={() => {}}
+      />
     </>
   );
 }
