@@ -1,4 +1,4 @@
-import ExpenseItem from "@/components/expense-item";
+import TransactionItem from "@/components/transaction-item";
 import TransactionMenu from "@/components/transaction-menu";
 import { fetcher } from "@/lib/api";
 import { Expense, User } from "@/lib/types";
@@ -31,12 +31,13 @@ export default function ExpensesTab(props: ExpensesTabProps) {
     <>
       <List>
         {expenses?.map((item, i) => (
-          <ExpenseItem
+          <TransactionItem
             key={i}
+            type="expense"
             ref={(el) => {
               itemRefs.current[i] = el;
             }}
-            expense={item}
+            transaction={item}
             onOptionsClick={() => onOptionsClick(i)}
           />
         ))}

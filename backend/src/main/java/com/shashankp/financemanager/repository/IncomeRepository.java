@@ -3,6 +3,7 @@ package com.shashankp.financemanager.repository;
 import com.shashankp.financemanager.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.model.Income;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,6 +22,6 @@ public interface IncomeRepository extends JpaRepository<Income, Long> {
       AND MONTH(i.date) = :month
     GROUP BY MONTH(i.date), YEAR(i.date)
     """)
-  TransactionTotalDTO findTotalForMonth(
+  Optional<TransactionTotalDTO> findTotalForMonth(
       @Param("userId") Long userId, @Param("month") int month, @Param("year") int year);
 }

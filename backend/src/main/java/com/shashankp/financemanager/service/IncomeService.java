@@ -4,6 +4,7 @@ import com.shashankp.financemanager.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.model.Income;
 import com.shashankp.financemanager.repository.IncomeRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +21,9 @@ public class IncomeService {
   }
 
   public TransactionTotalDTO findTotalIncomesForMonth(Long userId, int month, int year) {
-    return incomeRepository.findTotalForMonth(userId, month, year);
+    Optional<TransactionTotalDTO> incomeForMonth =
+        incomeRepository.findTotalForMonth(userId, month, year);
+
+    return incomeForMonth.orElse(new TransactionTotalDTO(0.0, month, year));
   }
 }

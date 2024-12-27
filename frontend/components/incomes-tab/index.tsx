@@ -1,21 +1,10 @@
-import {
-  AmountText,
-  TransactionItemActions,
-} from "@/components/expense-item/styles";
+import TransactionItem from "@/components/transaction-item";
+import TransactionMenu from "@/components/transaction-menu";
 import { fetcher } from "@/lib/api";
 import { Income, User } from "@/lib/types";
-import { CallReceivedRounded, MoreVertRounded } from "@mui/icons-material";
-import {
-  IconButton,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-} from "@mui/material";
-import dayjs from "dayjs";
+import { List } from "@mui/material";
 import { useRef, useState } from "react";
 import useSWR from "swr";
-import TransactionMenu from "../transaction-menu";
 
 interface IncomesTabProps {
   user?: Optional<User>;
@@ -45,26 +34,15 @@ export default function IncomesTab(props: IncomesTabProps) {
     <>
       <List>
         {incomes?.map((item, i) => (
-          <ListItem key={i}>
-            <ListItemIcon>
-              <CallReceivedRounded color="success" />
-            </ListItemIcon>
-            <ListItemText
-              primary={item.source}
-              secondary={dayjs(item.date).toDate().toLocaleDateString()}
-            />
-            <TransactionItemActions>
-              <AmountText>₹ {item.amount.toLocaleString()}</AmountText>
-              <IconButton
-                ref={(el) => {
-                  itemRefs.current[i] = el;
-                }}
-                onClick={() => onOptionsClick(i)}
-              >
-                <MoreVertRounded />
-              </IconButton>
-            </TransactionItemActions>
-          </ListItem>
+          <TransactionItem
+            key={i}
+            type="income"
+            ref={(el) => {
+              itemRefs.current[i] = el;
+            }}
+            transaction={item}
+            onOptionsClick={() => onOptionsClick(i)}
+          />
         ))}
       </List>
 

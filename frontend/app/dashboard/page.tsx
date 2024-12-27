@@ -2,6 +2,7 @@
 
 import ExpenseDialog from "@/components/expense-dialog";
 import ExpensesTab from "@/components/expenses-tab";
+import AppHeader from "@/components/header/header";
 import IncomeDialog from "@/components/income-dialog";
 import IncomesTab from "@/components/incomes-tab";
 import { fetcher } from "@/lib/api";
@@ -54,10 +55,11 @@ export default function DashboardPage() {
   const [tab, setTab] = useState("0");
   const [isExpenseDialogOpen, setExpenseDialogOpen] = useState(false);
   const [isIncomeDialogOpen, setIncomeDialogOpen] = useState(false);
-  0;
 
   return (
     <>
+      <AppHeader />
+
       <Main className="py-20 gap-12">
         <section>
           <Welcome className="mb-12">Hello, {user?.username}</Welcome>
@@ -94,7 +96,7 @@ export default function DashboardPage() {
               }}
             >
               <SummaryCardTitle>Budgets</SummaryCardTitle>
-              <SummaryNumber>{0}</SummaryNumber>
+              <SummaryNumber>{!!budgets ? budgets.length : 0}</SummaryNumber>
             </SummaryCard>
           </SummaryContainer>
         </section>
