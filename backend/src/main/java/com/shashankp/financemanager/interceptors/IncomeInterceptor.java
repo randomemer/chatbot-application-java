@@ -1,8 +1,8 @@
 package com.shashankp.financemanager.interceptors;
 
-import com.shashankp.financemanager.model.Expense;
+import com.shashankp.financemanager.model.Income;
 import com.shashankp.financemanager.model.User;
-import com.shashankp.financemanager.repository.ExpenseRepository;
+import com.shashankp.financemanager.repository.IncomeRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Objects;
@@ -11,24 +11,23 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 
-public class ExpenseInterceptor implements HandlerInterceptor {
-  private final ExpenseRepository expenseRepository;
+public class IncomeInterceptor implements HandlerInterceptor {
+  private final IncomeRepository incomeRepository;
 
-  // Constructor-based Dependency Injection
-  public ExpenseInterceptor(ExpenseRepository expenseRepository) {
-    this.expenseRepository = expenseRepository;
+  public IncomeInterceptor(IncomeRepository incomeRepository) {
+    this.incomeRepository = incomeRepository;
   }
 
   @Override
   public boolean preHandle(HttpServletRequest req, HttpServletResponse resp, Object handler) {
     String uri = req.getRequestURI();
 
-    if (uri.matches("/api/expenses/\\d+")) {
+    if (uri.matches("/api/incomes/\\d+")) {
       String id = uri.substring(uri.lastIndexOf("/") + 1);
 
-      // 1. Check if the expense exists
-      Optional<Expense> expenseOptional = expenseRepository.findById(Long.parseLong(id));
-      if (expenseOptional.isEmpty()) {
+      // 1. Check if the income exists
+      Optional<Income> incomeOptional = incomeRepository.findById(Long.parseLong(id));
+      if (incomeOptional.isEmpty()) {
         resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
         return false;
       }
@@ -38,14 +37,14 @@ public class ExpenseInterceptor implements HandlerInterceptor {
       Object principal = auth.getPrincipal();
 
       if (principal instanceof User user) {
-        if (!Objects.equals(expenseOptional.get().getUser().getId(), user.getId())) {
+        if (!Objects.equals(incomeOptional.get().getUser().getId(), user.getId())) {
           resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
           return false;
         }
       }
 
       // 3. Store the expense object in the request
-      req.setAttribute("expense", expenseOptional.get());
+      req.setAttribute("income", incomeOptional.get());
     }
 
     return true;

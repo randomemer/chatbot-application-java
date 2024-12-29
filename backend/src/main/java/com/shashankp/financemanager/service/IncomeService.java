@@ -1,10 +1,11 @@
 package com.shashankp.financemanager.service;
 
+import com.shashankp.financemanager.dto.IncomeInputDTO;
 import com.shashankp.financemanager.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.model.Income;
 import com.shashankp.financemanager.repository.IncomeRepository;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +22,28 @@ public class IncomeService {
   }
 
   public TransactionTotalDTO findTotalIncomesForMonth(Long userId, int month, int year) {
-    Optional<TransactionTotalDTO> incomeForMonth =
-        incomeRepository.findTotalForMonth(userId, month, year);
+    return incomeRepository
+        .findTotalForMonth(userId, month, year)
+        .orElse(new TransactionTotalDTO(0.0, month, year));
+  }
 
-    return incomeForMonth.orElse(new TransactionTotalDTO(0.0, month, year));
+  public Income updateIncome(Income income, IncomeInputDTO incomeInput) {
+    if (incomeInput.getAmount() != null) {
+      income.setAmount(incomeInput.getAmount());
+    }
+
+    if (incomeInput.getSource() != null) {
+      income.setSource(incomeInput.getSource());
+    }
+
+    if (incomeInput.getDate() != null) {
+      income.setDate(LocalDate.parse(incomeInput.getDate()));
+    }
+
+    return incomeRepository.save(income);
+  }
+
+  public void deleteIncome(Long id) {
+    incomeRepository.deleteById(id);
   }
 }

@@ -4,9 +4,7 @@ import com.shashankp.financemanager.dto.ExpenseInputDTO;
 import com.shashankp.financemanager.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.model.Expense;
 import com.shashankp.financemanager.model.User;
-import com.shashankp.financemanager.service.ExpenseCategoryService;
 import com.shashankp.financemanager.service.ExpenseService;
-import com.shashankp.financemanager.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +16,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/expenses")
 public class ExpenseController {
   @Autowired private ExpenseService expenseService;
-
-  @Autowired private UserService userService;
-
-  @Autowired private ExpenseCategoryService expenseCategoryService;
 
   @PostMapping
   public ResponseEntity<Expense> createExpense(
@@ -44,11 +38,9 @@ public class ExpenseController {
 
   @PutMapping("/{id}")
   public ResponseEntity<Expense> updateExpense(
-      HttpServletRequest request,
-      @PathVariable Long id,
-      @RequestBody ExpenseInputDTO expenseInput) {
+      HttpServletRequest request, @RequestBody ExpenseInputDTO expenseInput) {
     Expense expense = (Expense) request.getAttribute("expense");
-    Expense savedExpense = expenseService.saveExpense(expense);
+    Expense savedExpense = expenseService.saveExpense(expense, expenseInput);
 
     return ResponseEntity.ok(savedExpense);
   }

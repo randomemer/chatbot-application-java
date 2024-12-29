@@ -1,45 +1,54 @@
 package com.shashankp.financemanager.controller;
 
+import com.shashankp.financemanager.dto.IncomeInputDTO;
 import com.shashankp.financemanager.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.model.Income;
 import com.shashankp.financemanager.model.User;
 import com.shashankp.financemanager.service.IncomeService;
-import com.shashankp.financemanager.service.UserService;
-import java.security.Principal;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/incomes")
 public class IncomeController {
-  @Autowired private UserService userService;
-
   @Autowired private IncomeService incomeService;
 
   @PostMapping
-  public ResponseEntity<Income> createIncome(@RequestBody Income income, Principal principal) {
-    Optional<User> userOptional = userService.findUserByUsername(principal.getName());
-    if (userOptional.isEmpty()) {
-      return ResponseEntity.notFound().build();
-    }
-
-    income.setUser(userOptional.get());
+  public ResponseEntity<Income> createIncome(
+      @RequestBody Income income, @AuthenticationPrincipal User user) {
+    income.setUser(user);
     Income savedIncome = incomeService.saveIncome(income);
 
     return ResponseEntity.ok(savedIncome);
   }
 
-  @GetMapping("/user/{userId}")
-  public List<Income> getIncomesByUserId(@PathVariable Long userId) {
-    return incomeService.findIncomesByUserId(userId);
+  @GetMapping
+  public List<Income> getIncomesByUserId(@AuthenticationPrincipal User user) {
+    return incomeService.findIncomesByUserId(user.getId());
   }
 
-  @GetMapping("/user/{userId}/total")
+  @GetMapping("/total")
   public TransactionTotalDTO getTotalForMonth(
-      @PathVariable Long userId, @RequestParam int month, @RequestParam int year) {
-    return incomeService.findTotalIncomesForMonth(userId, month, year);
+      @RequestParam int month, @RequestParam int year, @AuthenticationPrincipal User user) {
+    return incomeService.findTotalIncomesForMonth(user.getId(), month, year);
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<Income> updateIncome(
+      HttpServletRequest req, @PathVariable Long id, @RequestBody IncomeInputDTO incomeInput) {
+    Income income = (Income) req.getAttribute("income");
+    Income savedIncome = incomeService.updateIncome(income, incomeInput);
+
+    return ResponseEntity.ok(savedIncome);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteIncome(@PathVariable Long id) {
+    incomeService.deleteIncome(id);
+    return ResponseEntity.ok().build();
   }
 }
