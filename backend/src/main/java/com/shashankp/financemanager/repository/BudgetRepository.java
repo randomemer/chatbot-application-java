@@ -14,11 +14,10 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
       """
     SELECT new com.shashankp.financemanager.dto.BudgetSummaryDTO(
       b.id AS budget_id,
-      b.user.id AS user_id,
       b.amount AS budget_limit,
-      b.category.id AS category_id,
-      ec.name AS category_name,
-      IFNULL(SUM(e.amount), 0) AS total_expenses
+      IFNULL(SUM(e.amount), 0) AS total_expenses,
+      b.user,
+      b.category
     )
     FROM
       Budget b
@@ -32,7 +31,7 @@ public interface BudgetRepository extends JpaRepository<Budget, Long> {
     WHERE
       b.user.id = :userId
     GROUP BY
-        b.id, b.user.id, b.amount, b.category.id, ec.id, ec.name, b.amount
+        b.id, b.user, b.amount, b.category
     """)
   List<BudgetSummaryDTO> getBudgetSummary(
       @Param("userId") Long userId, @Param("month") int month, @Param("year") int year);

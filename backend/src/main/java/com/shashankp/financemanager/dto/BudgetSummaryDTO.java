@@ -1,5 +1,7 @@
 package com.shashankp.financemanager.dto;
 
+import com.shashankp.financemanager.model.ExpenseCategory;
+import com.shashankp.financemanager.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -7,9 +9,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class BudgetSummaryDTO {
   private Long id;
-  private Long user_id;
   private Double budget_limit;
-  private Long category_id;
-  private String category_name;
   private Double total_expenses;
+  private User user;
+  private ExpenseCategory expense_category;
 }

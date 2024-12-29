@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ExpenseRepository extends JpaRepository<Expense, Long> {
+  @Query("SELECT e FROM Expense e WHERE e.user.id = :userId ORDER BY e.date DESC")
   List<Expense> findByUserId(Long userId);
 
   @Query(

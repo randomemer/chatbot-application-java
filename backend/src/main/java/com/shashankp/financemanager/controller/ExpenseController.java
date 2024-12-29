@@ -3,17 +3,15 @@ package com.shashankp.financemanager.controller;
 import com.shashankp.financemanager.dto.ExpenseInputDTO;
 import com.shashankp.financemanager.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.model.Expense;
-import com.shashankp.financemanager.model.ExpenseCategory;
 import com.shashankp.financemanager.model.User;
 import com.shashankp.financemanager.service.ExpenseCategoryService;
 import com.shashankp.financemanager.service.ExpenseService;
 import com.shashankp.financemanager.service.UserService;
-import java.security.Principal;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -25,46 +23,40 @@ public class ExpenseController {
 
   @Autowired private ExpenseCategoryService expenseCategoryService;
 
-  @Autowired private ModelMapper modelMapper;
-
   @PostMapping
   public ResponseEntity<Expense> createExpense(
-      @RequestBody ExpenseInputDTO expenseInputDTO, Principal principal) {
-    // Check authenticated user exists
-    Optional<User> userOptional = userService.findUserByUsername(principal.getName());
-    if (userOptional.isEmpty()) {
-      return ResponseEntity.notFound().build();
-    }
+      @RequestBody ExpenseInputDTO expenseInputDTO, @AuthenticationPrincipal User user) {
+    Expense savedExpense = expenseService.createExpense(expenseInputDTO, user);
 
-    System.out.println(expenseInputDTO.toString());
+    return ResponseEntity.ok(savedExpense);
+  }
 
-    Expense expense = modelMapper.map(expenseInputDTO, Expense.class);
-    expense.setUser(userOptional.get());
+  @GetMapping
+  public List<Expense> getExpensesByUserId(@AuthenticationPrincipal User user) {
+    return expenseService.getExpensesByUserId(user.getId());
+  }
 
-    System.out.println(
-        expense.getAmount() + " " + expense.getDescription() + " " + expense.getDate());
+  @GetMapping("/total")
+  public TransactionTotalDTO getTotalExpensesForMonth(
+      @RequestParam int month, @RequestParam int year, @AuthenticationPrincipal User user) {
+    return expenseService.getTotalExpensesForMonth(user.getId(), month, year);
+  }
 
-    // Check valid expense category
-    Optional<ExpenseCategory> expenseCategoryOptional =
-        expenseCategoryService.findExpenseCategoryById(expenseInputDTO.getCategory_id());
-    if (expenseCategoryOptional.isEmpty()) {
-      return ResponseEntity.notFound().build();
-    }
-
-    expense.setCategory(expenseCategoryOptional.get());
+  @PutMapping("/{id}")
+  public ResponseEntity<Expense> updateExpense(
+      HttpServletRequest request,
+      @PathVariable Long id,
+      @RequestBody ExpenseInputDTO expenseInput) {
+    Expense expense = (Expense) request.getAttribute("expense");
     Expense savedExpense = expenseService.saveExpense(expense);
 
     return ResponseEntity.ok(savedExpense);
   }
 
-  @GetMapping("/user/{userId}")
-  public List<Expense> getExpensesByUserId(@PathVariable Long userId) {
-    return expenseService.getExpensesByUserId(userId);
-  }
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteExpense(@PathVariable Long id) {
+    expenseService.deleteExpense(id);
 
-  @GetMapping("/user/{userId}/total")
-  public TransactionTotalDTO getTotalExpensesForMonth(
-      @PathVariable Long userId, @RequestParam int month, @RequestParam int year) {
-    return expenseService.getTotalExpensesForMonth(userId, month, year);
+    return ResponseEntity.ok().build();
   }
 }
