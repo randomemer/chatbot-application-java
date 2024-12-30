@@ -7,6 +7,7 @@ import com.shashankp.financemanager.model.ExpenseCategory;
 import com.shashankp.financemanager.model.User;
 import com.shashankp.financemanager.repository.ExpenseCategoryRepository;
 import com.shashankp.financemanager.repository.ExpenseRepository;
+import com.shashankp.financemanager.repository.UserRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -14,9 +15,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ExpenseService {
+  @Autowired private UserRepository userRepository;
   @Autowired private ExpenseRepository expenseRepository;
   @Autowired private ExpenseCategoryRepository expenseCategoryRepository;
   @Autowired private ModelMapper modelMapper;
@@ -38,7 +41,7 @@ public class ExpenseService {
 
   public Expense saveExpense(Expense expense, ExpenseInputDTO expenseInput) {
     if (expenseInput.getAmount() != null) {
-      expense.setAmount(expense.getAmount());
+      expense.setAmount(expenseInput.getAmount());
     }
 
     if (expenseInput.getDescription() != null) {
@@ -52,17 +55,20 @@ public class ExpenseService {
 
     // Check valid expense category
     Long categoryId = expenseInput.getCategory_id();
-    Optional<ExpenseCategory> expenseCategoryOptional =
-        expenseCategoryRepository.findById(categoryId);
-    if (expenseCategoryOptional.isEmpty()) {
-      throw new ResourceNotFoundException(
-          "Expense category with id = " + categoryId + " does not exist.");
+    if (categoryId != null) {
+      Optional<ExpenseCategory> expenseCategoryOptional =
+          expenseCategoryRepository.findById(categoryId);
+      if (expenseCategoryOptional.isEmpty()) {
+        throw new ResourceNotFoundException(
+            "Expense category with id = " + categoryId + " does not exist.");
+      }
+      expense.setCategory(expenseCategoryOptional.get());
     }
-    expense.setCategory(expenseCategoryOptional.get());
 
     return saveExpense(expense);
   }
 
+  @Transactional
   public Expense createExpense(ExpenseInputDTO expenseInputDTO, User user) {
     Expense expense = modelMapper.map(expenseInputDTO, Expense.class);
     expense.setUser(user);

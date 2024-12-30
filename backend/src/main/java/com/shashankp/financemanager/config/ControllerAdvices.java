@@ -23,6 +23,7 @@ public class ControllerAdvices extends ResponseEntityExceptionHandler {
         IllegalStateException.class
       })
   public ResponseEntity<?> runTimeException(Exception ex) {
+    ex.printStackTrace();
     var exceptionDetails =
         new ExceptionDetails(
             ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR, ZonedDateTime.now(ZoneId.of("UTC")));

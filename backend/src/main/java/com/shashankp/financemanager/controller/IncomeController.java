@@ -4,6 +4,7 @@ import com.shashankp.financemanager.dto.IncomeInputDTO;
 import com.shashankp.financemanager.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.model.Income;
 import com.shashankp.financemanager.model.User;
+import com.shashankp.financemanager.security.CustomUserDetails;
 import com.shashankp.financemanager.service.IncomeService;
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -27,19 +28,21 @@ public class IncomeController {
   }
 
   @GetMapping
-  public List<Income> getIncomesByUserId(@AuthenticationPrincipal User user) {
-    return incomeService.findIncomesByUserId(user.getId());
+  public List<Income> getIncomesByUserId(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    return incomeService.findIncomesByUserId(userDetails.getId());
   }
 
   @GetMapping("/total")
   public TransactionTotalDTO getTotalForMonth(
-      @RequestParam int month, @RequestParam int year, @AuthenticationPrincipal User user) {
-    return incomeService.findTotalIncomesForMonth(user.getId(), month, year);
+      @RequestParam int month,
+      @RequestParam int year,
+      @AuthenticationPrincipal CustomUserDetails userDetails) {
+    return incomeService.findTotalIncomesForMonth(userDetails.getId(), month, year);
   }
 
   @PutMapping("/{id}")
   public ResponseEntity<Income> updateIncome(
-      HttpServletRequest req, @PathVariable Long id, @RequestBody IncomeInputDTO incomeInput) {
+      HttpServletRequest req, @RequestBody IncomeInputDTO incomeInput) {
     Income income = (Income) req.getAttribute("income");
     Income savedIncome = incomeService.updateIncome(income, incomeInput);
 

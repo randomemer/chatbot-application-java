@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,14 +33,14 @@ public class BudgetController {
     return ResponseEntity.ok(savedBudget);
   }
 
-  @GetMapping("/user/{userId}")
-  public List<Budget> getBudgetsByUserId(@PathVariable Long userId) {
-    return budgetService.getBudgetsByUserId(userId);
+  @GetMapping
+  public List<Budget> getBudgets(@AuthenticationPrincipal User user) {
+    return budgetService.getBudgetsByUserId(user.getId());
   }
 
-  @GetMapping("/user/{userId}/summary")
+  @GetMapping("/summary")
   public List<BudgetSummaryDTO> getBudgetSummary(
-      @PathVariable Long userId, @RequestParam int month, @RequestParam int year) {
-    return budgetService.getBudgetSummary(userId, month, year);
+      @RequestParam int month, @RequestParam int year, @AuthenticationPrincipal User user) {
+    return budgetService.getBudgetSummary(user.getId(), month, year);
   }
 }
