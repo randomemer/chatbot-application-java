@@ -1,10 +1,11 @@
 "use client";
 
-import ExpenseDialog from "@/components/expense-dialog";
-import ExpensesTab from "@/components/expenses-tab";
+import ExpenseDialog from "@/components/dialogs/expense-dialog";
+import IncomeDialog from "@/components/dialogs/income-dialog";
 import AppHeader from "@/components/header/header";
-import IncomeDialog from "@/components/income-dialog";
-import IncomesTab from "@/components/incomes-tab";
+import BudgetsTab from "@/components/tabs/budgets-tab";
+import ExpensesTab from "@/components/tabs/expenses-tab";
+import IncomesTab from "@/components/tabs/incomes-tab";
 import { fetcher } from "@/lib/api";
 import { TransactionSummary, User } from "@/lib/types";
 import {
@@ -40,17 +41,14 @@ export default function DashboardPage() {
   });
 
   const { data: totalExpenses } = useSWR<TransactionSummary>(
-    () => user && `/expenses/user/${user.id}/total?${query}`,
+    `/expenses/total?${query}`,
     fetcher
   );
   const { data: totalIncomes } = useSWR<TransactionSummary>(
-    () => user && `/incomes/user/${user.id}/total?${query}`,
+    `/incomes/total?${query}`,
     fetcher
   );
-  const { data: budgets } = useSWR(
-    () => user && `/budgets/user/${user.id}/summary?${query}`,
-    fetcher
-  );
+  const { data: budgets } = useSWR(`/budgets/summary?${query}`, fetcher);
 
   const [tab, setTab] = useState("0");
   const [isExpenseDialogOpen, setExpenseDialogOpen] = useState(false);
@@ -117,14 +115,23 @@ export default function DashboardPage() {
                   icon={<CallReceivedRounded />}
                   iconPosition="start"
                 />
+                <TransactionTab
+                  value="2"
+                  label="Budgets"
+                  icon={<SavingsRounded />}
+                  iconPosition="start"
+                />
               </CustomTabList>
             </Box>
 
             <TabPanel value="0">
-              <ExpensesTab user={user} />
+              <ExpensesTab />
             </TabPanel>
             <TabPanel value="1">
-              <IncomesTab user={user} />
+              <IncomesTab />
+            </TabPanel>
+            <TabPanel value="2">
+              <BudgetsTab />
             </TabPanel>
           </TabContext>
         </section>

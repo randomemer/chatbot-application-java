@@ -1,4 +1,4 @@
-import { CustomDialogContent } from "@/components/expense-dialog/styles";
+import { CustomDialogContent } from "@/components/dialogs/expense-dialog/styles";
 import api from "@/lib/api";
 import { Income, IncomeInput } from "@/lib/types";
 import { LoadingButton } from "@mui/lab";
@@ -11,20 +11,36 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 
-interface IncomeDialogProps {
+interface IncomeDialogCreateProps {
   isOpen?: Optional<boolean>;
-  editIncome?: Optional<Income>;
   onClose: () => void;
 }
 
-export default function IncomeDialog(props: IncomeDialogProps) {
+interface IncomeDialogEditProps extends IncomeDialogCreateProps {
+  income: Income | null;
+}
+
+export default function IncomeDialog(
+  props: IncomeDialogCreateProps | IncomeDialogEditProps
+) {
+  const isEdit = "income" in props;
+
   const [isLoading, setLoading] = useState(false);
 
   const [amount, setAmount] = useState("");
   const [source, setSource] = useState("");
   const [date, setDate] = useState(dayjs(new Date()));
+
+  useEffect(() => {
+    if ("income" in props && !!props.income) {
+      const income = (props as IncomeDialogEditProps).income!;
+      setAmount(income.amount.toString());
+      setSource(income.source);
+      setDate(dayjs(income.date));
+    }
+  }, [props]);
 
   const resetState = () => {
     setAmount("");
@@ -47,8 +63,13 @@ export default function IncomeDialog(props: IncomeDialogProps) {
         source: source,
       };
 
-      const resp = await api.post("/incomes", data);
-      console.log("Created Income", resp);
+      if (!isEdit) {
+        const resp = await api.post("/incomes", data);
+        console.log("Created Income", resp);
+      } else {
+        const resp = await api.put(`/incomes/${props.income!.id}`, data);
+        console.log("Updated Income", resp);
+      }
 
       onClose();
     } catch (error) {
@@ -59,9 +80,7 @@ export default function IncomeDialog(props: IncomeDialogProps) {
 
   return (
     <Dialog open={!!props.isOpen} onClose={props.onClose}>
-      <DialogTitle>
-        {!props.editIncome ? "Create Income" : "Edit Income"}
-      </DialogTitle>
+      <DialogTitle>{!isEdit ? "Create Income" : "Edit Income"}</DialogTitle>
 
       <CustomDialogContent className="gap-4">
         <TextField
@@ -94,7 +113,7 @@ export default function IncomeDialog(props: IncomeDialogProps) {
           color="primary"
           onClick={(e) => onSubmit(e)}
         >
-          {!props.editIncome ? "Create" : "Save"}
+          {!isEdit ? "Create" : "Save"}
         </LoadingButton>
       </DialogActions>
     </Dialog>

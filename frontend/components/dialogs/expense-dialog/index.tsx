@@ -1,5 +1,5 @@
 import api, { fetcher } from "@/lib/api";
-import { ExpenseCategory, ExpenseInput } from "@/lib/types";
+import { Expense, ExpenseCategory, ExpenseInput } from "@/lib/types";
 import { LoadingButton } from "@mui/lab";
 import {
   Button,
@@ -14,23 +14,39 @@ import {
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
-import { MouseEventHandler, useState } from "react";
+import { MouseEventHandler, useEffect, useState } from "react";
 import useSWR from "swr";
 import { CustomDialogContent } from "./styles";
 
-interface ExpenseDialogProps {
-  isEdit?: Optional<boolean>;
+interface ExpenseDialogCreateProps {
   isOpen?: Optional<boolean>;
   onClose: () => void;
 }
 
-export default function ExpenseDialog(props: ExpenseDialogProps) {
-  const [isLoading, setLoading] = useState(false);
+interface ExpenseDialogEditProps extends ExpenseDialogCreateProps {
+  expense: Expense | null;
+}
 
+export default function ExpenseDialog(
+  props: ExpenseDialogCreateProps | ExpenseDialogEditProps
+) {
+  const isEdit = "expense" in props;
+
+  const [isLoading, setLoading] = useState(false);
   const [amount, setAmount] = useState("");
   const [desc, setDesc] = useState("");
   const [date, setDate] = useState(dayjs(new Date()));
   const [category, setCategory] = useState(-1);
+
+  useEffect(() => {
+    if ("expense" in props && !!props.expense) {
+      const expense = (props as ExpenseDialogEditProps).expense!;
+      setAmount(expense.amount.toString());
+      setDesc(expense.description);
+      setDate(dayjs(expense.date));
+      setCategory(expense.category.id ?? -1);
+    }
+  }, [props]);
 
   const { data: categories } = useSWR<ExpenseCategory[]>(
     "/expense-categories",
@@ -63,8 +79,13 @@ export default function ExpenseDialog(props: ExpenseDialogProps) {
         category_id: category !== -1 ? category : null,
       };
 
-      const resp = await api.post("/expenses", data);
-      console.log(resp);
+      if (!isEdit) {
+        const resp = await api.post("/expenses", data);
+        console.log(resp);
+      } else {
+        const resp = await api.put(`/expenses/${props.expense!.id}`, data);
+        console.log(resp);
+      }
 
       onClose();
     } catch (error) {
@@ -79,9 +100,7 @@ export default function ExpenseDialog(props: ExpenseDialogProps) {
       onClose={onClose}
       PaperProps={{ component: "form" }}
     >
-      <DialogTitle>
-        {!props.isEdit ? "Create Expense" : "Edit Expense"}
-      </DialogTitle>
+      <DialogTitle>{!isEdit ? "Create Expense" : "Edit Expense"}</DialogTitle>
 
       <CustomDialogContent className="gap-4">
         <TextField
@@ -131,7 +150,7 @@ export default function ExpenseDialog(props: ExpenseDialogProps) {
           color="primary"
           onClick={(e) => onSubmit(e)}
         >
-          {!props.isEdit ? "Create" : "Save"}
+          {!isEdit ? "Create" : "Save"}
         </LoadingButton>
       </DialogActions>
     </Dialog>

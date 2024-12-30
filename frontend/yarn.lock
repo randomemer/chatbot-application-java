@@ -1121,6 +1121,11 @@ ms@2.1.2:
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.1.2.tgz#d09d1f357b443f493382a8eb3ccd183872ae6009"
   integrity sha512-sGkPx+VjMtmA6MX27oA4FBFELFCZZ4S4XqeGOXCv68tT+jb3vk/RyaKWP0PTKyWtmLSM0b+adUTEvbs1PEaH2w==
 
+mui-modal-provider@^2.4.4:
+  version "2.4.4"
+  resolved "https://registry.yarnpkg.com/mui-modal-provider/-/mui-modal-provider-2.4.4.tgz#1b9e90baa78e5932e7d7658f9671929727198e12"
+  integrity sha512-vBIMqqlXvjHJIOyNnMb+M1444QMWLVwS65vr4BeOrAxFQWPP5T+YuCrHGk751kVtHzqGe8xS+6UMyRTckGnYdQ==
+
 mz@^2.7.0:
   version "2.7.0"
   resolved "https://registry.yarnpkg.com/mz/-/mz-2.7.0.tgz#95008057a56cafadc2bc63dde7f9ff6955948e32"

@@ -3,7 +3,6 @@ package com.shashankp.financemanager.controller;
 import com.shashankp.financemanager.dto.IncomeInputDTO;
 import com.shashankp.financemanager.dto.TransactionTotalDTO;
 import com.shashankp.financemanager.model.Income;
-import com.shashankp.financemanager.model.User;
 import com.shashankp.financemanager.security.CustomUserDetails;
 import com.shashankp.financemanager.service.IncomeService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,8 +19,8 @@ public class IncomeController {
 
   @PostMapping
   public ResponseEntity<Income> createIncome(
-      @RequestBody Income income, @AuthenticationPrincipal User user) {
-    income.setUser(user);
+      @RequestBody Income income, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    income.setUser(userDetails.getUser());
     Income savedIncome = incomeService.saveIncome(income);
 
     return ResponseEntity.ok(savedIncome);

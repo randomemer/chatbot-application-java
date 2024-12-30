@@ -3,6 +3,7 @@ package com.shashankp.financemanager.controller;
 import com.shashankp.financemanager.dto.BudgetSummaryDTO;
 import com.shashankp.financemanager.model.Budget;
 import com.shashankp.financemanager.model.User;
+import com.shashankp.financemanager.security.CustomUserDetails;
 import com.shashankp.financemanager.service.BudgetService;
 import com.shashankp.financemanager.service.UserService;
 import java.security.Principal;
@@ -34,13 +35,15 @@ public class BudgetController {
   }
 
   @GetMapping
-  public List<Budget> getBudgets(@AuthenticationPrincipal User user) {
-    return budgetService.getBudgetsByUserId(user.getId());
+  public List<Budget> getBudgets(@AuthenticationPrincipal CustomUserDetails userDetails) {
+    return budgetService.getBudgetsByUserId(userDetails.getId());
   }
 
   @GetMapping("/summary")
   public List<BudgetSummaryDTO> getBudgetSummary(
-      @RequestParam int month, @RequestParam int year, @AuthenticationPrincipal User user) {
-    return budgetService.getBudgetSummary(user.getId(), month, year);
+      @RequestParam int month,
+      @RequestParam int year,
+      @AuthenticationPrincipal CustomUserDetails userDetails) {
+    return budgetService.getBudgetSummary(userDetails.getId(), month, year);
   }
 }

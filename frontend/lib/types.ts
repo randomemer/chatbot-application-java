@@ -25,6 +25,14 @@ export interface Income {
   user: User;
 }
 
+export interface BudgetSummary {
+  id: number;
+  total_expenses: number;
+  budget_limit: number;
+  user: User;
+  expense_category: ExpenseCategory;
+}
+
 export interface ExpenseCategory {
   id: number;
   name: string;
