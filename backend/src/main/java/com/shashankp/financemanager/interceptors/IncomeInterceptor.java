@@ -1,8 +1,8 @@
 package com.shashankp.financemanager.interceptors;
 
 import com.shashankp.financemanager.model.Income;
-import com.shashankp.financemanager.model.User;
 import com.shashankp.financemanager.repository.IncomeRepository;
+import com.shashankp.financemanager.security.CustomUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.util.Objects;
@@ -36,7 +36,7 @@ public class IncomeInterceptor implements HandlerInterceptor {
       Authentication auth = SecurityContextHolder.getContext().getAuthentication();
       Object principal = auth.getPrincipal();
 
-      if (principal instanceof User user) {
+      if (principal instanceof CustomUserDetails user) {
         if (!Objects.equals(incomeOptional.get().getUser().getId(), user.getId())) {
           resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
           return false;

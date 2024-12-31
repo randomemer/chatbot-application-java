@@ -1,7 +1,9 @@
 package com.shashankp.financemanager.config;
 
+import com.shashankp.financemanager.interceptors.BudgetInterceptor;
 import com.shashankp.financemanager.interceptors.ExpenseInterceptor;
 import com.shashankp.financemanager.interceptors.IncomeInterceptor;
+import com.shashankp.financemanager.repository.BudgetRepository;
 import com.shashankp.financemanager.repository.ExpenseRepository;
 import com.shashankp.financemanager.repository.IncomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class InterceptorConfig implements WebMvcConfigurer {
   @Autowired ExpenseRepository expenseRepository;
   @Autowired IncomeRepository incomeRepository;
+  @Autowired BudgetRepository budgetRepository;
 
   @Override
   public void addInterceptors(InterceptorRegistry registry) {
@@ -23,5 +26,9 @@ public class InterceptorConfig implements WebMvcConfigurer {
     registry
         .addInterceptor(new IncomeInterceptor(incomeRepository))
         .addPathPatterns("/api/incomes/*");
+
+    registry
+        .addInterceptor(new BudgetInterceptor(budgetRepository))
+        .addPathPatterns("/api/budgets/*");
   }
 }

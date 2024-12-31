@@ -7,7 +7,6 @@ import com.shashankp.financemanager.model.ExpenseCategory;
 import com.shashankp.financemanager.model.User;
 import com.shashankp.financemanager.repository.ExpenseCategoryRepository;
 import com.shashankp.financemanager.repository.ExpenseRepository;
-import com.shashankp.financemanager.repository.UserRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -19,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ExpenseService {
-  @Autowired private UserRepository userRepository;
   @Autowired private ExpenseRepository expenseRepository;
   @Autowired private ExpenseCategoryRepository expenseCategoryRepository;
   @Autowired private ModelMapper modelMapper;

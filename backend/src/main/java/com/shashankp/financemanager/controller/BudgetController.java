@@ -1,14 +1,13 @@
 package com.shashankp.financemanager.controller;
 
+import com.shashankp.financemanager.dto.BudgetInputDTO;
 import com.shashankp.financemanager.dto.BudgetSummaryDTO;
 import com.shashankp.financemanager.model.Budget;
-import com.shashankp.financemanager.model.User;
 import com.shashankp.financemanager.security.CustomUserDetails;
 import com.shashankp.financemanager.service.BudgetService;
 import com.shashankp.financemanager.service.UserService;
-import java.security.Principal;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -22,16 +21,12 @@ public class BudgetController {
   @Autowired private BudgetService budgetService;
 
   @PostMapping
-  public ResponseEntity<Budget> createBudget(@RequestBody Budget budget, Principal principal) {
-    Optional<User> userOptional = userService.findUserByUsername(principal.getName());
-    if (userOptional.isEmpty()) {
-      return ResponseEntity.notFound().build();
-    }
+  public ResponseEntity<Budget> createBudget(
+      @RequestBody BudgetInputDTO budgetInput,
+      @AuthenticationPrincipal CustomUserDetails userDetails) {
+    Budget createdBudget = budgetService.createBudget(budgetInput, userDetails.getUser());
 
-    budget.setUser(userOptional.get());
-    Budget savedBudget = budgetService.saveBudget(budget);
-
-    return ResponseEntity.ok(savedBudget);
+    return ResponseEntity.ok(createdBudget);
   }
 
   @GetMapping
@@ -45,5 +40,20 @@ public class BudgetController {
       @RequestParam int year,
       @AuthenticationPrincipal CustomUserDetails userDetails) {
     return budgetService.getBudgetSummary(userDetails.getId(), month, year);
+  }
+
+  @PutMapping("/{id}")
+  public ResponseEntity<Budget> updateBudget(
+      HttpServletRequest req, @RequestBody BudgetInputDTO budgetInput) {
+    Budget budget = (Budget) req.getAttribute("budget");
+    Budget savedBudget = budgetService.saveBudget(budget, budgetInput);
+
+    return ResponseEntity.ok(savedBudget);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<Void> deleteBudget(@PathVariable Long id) {
+    budgetService.deleteBudget(id);
+    return ResponseEntity.ok().build();
   }
 }
