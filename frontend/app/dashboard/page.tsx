@@ -1,5 +1,6 @@
 "use client";
 
+import BudgetDialog from "@/components/dialogs/budget-dialog";
 import ExpenseDialog from "@/components/dialogs/expense-dialog";
 import IncomeDialog from "@/components/dialogs/income-dialog";
 import AppHeader from "@/components/header/header";
@@ -53,6 +54,7 @@ export default function DashboardPage() {
   const [tab, setTab] = useState("0");
   const [isExpenseDialogOpen, setExpenseDialogOpen] = useState(false);
   const [isIncomeDialogOpen, setIncomeDialogOpen] = useState(false);
+  const [isBudgetDialogOpen, setBudgetDialogOpen] = useState(false);
 
   return (
     <>
@@ -155,6 +157,7 @@ export default function DashboardPage() {
           <SpeedDialAction
             icon={<SavingsRounded color="primary" />}
             tooltipTitle="Add Budget"
+            onClick={() => setBudgetDialogOpen(true)}
           />
         </SpeedDial>
       </Main>
@@ -167,6 +170,11 @@ export default function DashboardPage() {
       <IncomeDialog
         isOpen={isIncomeDialogOpen}
         onClose={() => setIncomeDialogOpen(false)}
+      />
+
+      <BudgetDialog
+        isOpen={isBudgetDialogOpen}
+        onClose={() => setBudgetDialogOpen(false)}
       />
     </>
   );

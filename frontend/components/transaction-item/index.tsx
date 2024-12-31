@@ -67,6 +67,7 @@ const TransactionItem = forwardRef<HTMLButtonElement, TransactionItemProps>(
               )}
             </Stack>
           }
+          secondaryTypographyProps={{ component: "div" }}
         />
         <TransactionItemActions>
           <AmountColumn>

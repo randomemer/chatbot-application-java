@@ -12,37 +12,42 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@mui/material";
+import { forwardRef } from "react";
 
 interface BudgetItemProps {
   budget: BudgetSummary;
   onOptionsClick: () => void;
 }
 
-export default function BudgetItem(props: BudgetItemProps) {
-  const { budget } = props;
-  const percent_spent = (budget.total_expenses / budget.budget_limit) * 100;
+const BudgetItem = forwardRef<HTMLButtonElement, BudgetItemProps>(
+  function BudgetItem(props, ref) {
+    const { budget } = props;
+    const percent_spent = (budget.total_expenses / budget.budget_limit) * 100;
 
-  return (
-    <ListItem>
-      <ListItemIcon>
-        <CircularProgressWithLabel
-          variant="determinate"
-          value={percent_spent}
-        />
-      </ListItemIcon>
-      <ListItemText primary={budget.expense_category.name} />
+    return (
+      <ListItem>
+        <ListItemIcon>
+          <CircularProgressWithLabel
+            variant="determinate"
+            value={percent_spent}
+          />
+        </ListItemIcon>
+        <ListItemText primary={budget.expense_category.name} />
 
-      <TransactionItemActions>
-        <AmountColumn>
-          <AmountText>
-            ₹ {budget.total_expenses.toLocaleString()} / ₹{" "}
-            {budget.budget_limit.toLocaleString()}
-          </AmountText>
-        </AmountColumn>
-        <IconButton onClick={() => props.onOptionsClick()}>
-          <MoreVertRounded />
-        </IconButton>
-      </TransactionItemActions>
-    </ListItem>
-  );
-}
+        <TransactionItemActions>
+          <AmountColumn>
+            <AmountText>
+              ₹ {budget.total_expenses.toLocaleString()} / ₹{" "}
+              {budget.budget_limit.toLocaleString()}
+            </AmountText>
+          </AmountColumn>
+          <IconButton ref={ref} onClick={() => props.onOptionsClick()}>
+            <MoreVertRounded />
+          </IconButton>
+        </TransactionItemActions>
+      </ListItem>
+    );
+  }
+);
+
+export default BudgetItem;

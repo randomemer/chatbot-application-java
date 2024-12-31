@@ -51,6 +51,11 @@ export interface IncomeInput {
   date: string;
 }
 
+export interface BudgetInput {
+  budget_limit: number;
+  expense_category_id: number;
+}
+
 export interface TransactionSummary {
   amount: number;
   month: number;
