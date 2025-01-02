@@ -19,7 +19,8 @@ import {
 import { TabContext, TabPanel } from "@mui/lab";
 import { Box, SpeedDial, SpeedDialAction, useTheme } from "@mui/material";
 import { green, purple, red } from "@mui/material/colors";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 import {
   CustomTabList,
@@ -35,6 +36,9 @@ import {
 export default function DashboardPage() {
   const { user } = useUser();
   const theme = useTheme();
+
+  const params = useSearchParams();
+  const router = useRouter();
 
   const date = new Date();
   const query = new URLSearchParams({
@@ -52,10 +56,14 @@ export default function DashboardPage() {
   );
   const { data: budgets } = useSWR(`/budgets/summary?${query}`, fetcher);
 
-  const [tab, setTab] = useState("0");
+  const [tab, setTab] = useState(params.get("tab") || "0");
   const [isExpenseDialogOpen, setExpenseDialogOpen] = useState(false);
   const [isIncomeDialogOpen, setIncomeDialogOpen] = useState(false);
   const [isBudgetDialogOpen, setBudgetDialogOpen] = useState(false);
+
+  useEffect(() => {
+    setTab(params.get("tab") || "0");
+  }, [params]);
 
   return (
     <>
@@ -105,7 +113,7 @@ export default function DashboardPage() {
         <section>
           <TabContext value={tab}>
             <Box sx={{ borderBottom: 1, borderColor: "divider" }}>
-              <CustomTabList onChange={(e, val) => setTab(val)}>
+              <CustomTabList onChange={(e, val) => router.push(`?tab=${val}`)}>
                 <TransactionTab
                   value="0"
                   label="Expenses"
