@@ -3,12 +3,13 @@
 import BudgetDialog from "@/components/dialogs/budget-dialog";
 import ExpenseDialog from "@/components/dialogs/expense-dialog";
 import IncomeDialog from "@/components/dialogs/income-dialog";
-import AppHeader from "@/components/header/header";
+import AppHeader from "@/components/header";
+import { useUser } from "@/components/providers/user";
 import BudgetsTab from "@/components/tabs/budgets-tab";
 import ExpensesTab from "@/components/tabs/expenses-tab";
 import IncomesTab from "@/components/tabs/incomes-tab";
 import { fetcher } from "@/lib/api";
-import { TransactionSummary, User } from "@/lib/types";
+import { TransactionSummary } from "@/lib/types";
 import {
   AddRounded,
   CallMadeRounded,
@@ -32,7 +33,7 @@ import {
 } from "./styles";
 
 export default function DashboardPage() {
-  const { data: user } = useSWR<User>(`/auth/me`, fetcher);
+  const { user } = useUser();
   const theme = useTheme();
 
   const date = new Date();

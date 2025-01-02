@@ -1,4 +1,4 @@
-import GlobalProvider from "@/components/global-provider";
+import GlobalProvider from "@/components/providers/global";
 import { inter } from "@/lib/theme";
 import "@/public/index.css";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";

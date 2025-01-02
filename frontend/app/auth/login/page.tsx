@@ -1,6 +1,7 @@
 "use client";
 
 import { Form, FormBtn, FormFields } from "@/app/auth/styles";
+import { useUser } from "@/components/providers/user";
 import api from "@/lib/api";
 import { Link, TextField, Typography } from "@mui/material";
 import NextLink from "next/link";
@@ -9,6 +10,7 @@ import { FormEventHandler, useState } from "react";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { fetchUser } = useUser();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -19,8 +21,9 @@ export default function LoginPage() {
     try {
       const body = { username: username.trim(), password };
       const resp = await api.post("/auth/login", body);
-
       console.log("login resp", resp);
+
+      fetchUser();
       router.push("/dashboard");
     } catch (error) {
       console.error(error);

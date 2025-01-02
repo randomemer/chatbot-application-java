@@ -1,3 +1,5 @@
+import { Avatar, Menu } from "@mui/material";
+import { listClasses } from "@mui/material/List";
 import { styled } from "@mui/material/styles";
 import Link from "next/link";
 
@@ -25,4 +27,17 @@ export const Logo = styled("span")`
   font-weight: 600;
   letter-spacing: -0.5px;
   color: ${({ theme }) => theme.palette.primary.main};
+`;
+
+export const MenuAvatar = styled(Avatar)`
+  height: 2rem;
+  width: 2rem;
+`;
+
+export const AccountMenu = styled(Menu)`
+  margin-top: 14px;
+
+  /* .${listClasses.root} {
+    width: 250px;
+  } */
 `;

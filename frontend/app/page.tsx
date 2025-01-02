@@ -9,8 +9,8 @@ export default function Home() {
   return (
     <IndexMain>
       <SavingsIcon color="primary" sx={{ fontSize: 72 }} />
-      <Stack alignItems="center">
-        <Typography variant="h3">Your Personal Finance Manager</Typography>
+      <Stack alignItems="center" color={"white"}>
+        <Typography variant="h3">WealthWise</Typography>
         <Typography variant="h6">
           Master Your Money, Shape Your Future!
         </Typography>

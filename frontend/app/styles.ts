@@ -1,4 +1,4 @@
-import homeBgImg from "@/public/images/home-bg.png";
+import homeBgImg from "@/public/images/background.webp";
 import { styled } from "@mui/material";
 
 export const IndexMain = styled("main")`
@@ -9,6 +9,7 @@ export const IndexMain = styled("main")`
   gap: 1rem;
   min-height: 100vh;
 
-  background-image: url(${homeBgImg.src});
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+    url(${homeBgImg.src});
   background-size: cover;
 `;
